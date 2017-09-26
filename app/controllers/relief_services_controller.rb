@@ -1,0 +1,2 @@
+class ReliefServicesController < ApplicationController
+end

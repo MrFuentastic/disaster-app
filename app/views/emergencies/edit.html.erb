@@ -1,0 +1,5 @@
+<%= form_tag "/emergencies/#{@emergency.id}", method: :post do %>
+  <input type="hidden" name="id" value="<%= @emergency.id %>">
+  <h3>Type of Emergency:</h3><input type="text" name="name" value="<%= @emergency.name %>">
+  <input type="submit" value="submit">
+<% end %>
