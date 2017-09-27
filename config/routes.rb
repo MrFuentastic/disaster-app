@@ -15,6 +15,12 @@ Rails.application.routes.draw do
   get '/emergencies/:id/edit' => 'emergencies#edit'
   post '/emergencies/:id' => 'emergencies#update'
   
+  get '/events/new' => 'events#new'
+  post '/events' => 'events#create'
+  get '/events/:id' => 'events#show'
+  get '/events/:id/edit' => 'events#edit'
+  post '/events/:id' => 'events#update'
+
   get '/services/new' => 'relief_services#new'
   post '/services' => 'relief_services#create'
   get '/services/:id' => 'relief_services#show'
