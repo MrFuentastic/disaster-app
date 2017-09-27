@@ -1,0 +1,7 @@
+<h1>Safe Zone info:</h1>
+<h4><%= @safe_location.name %></h4>
+<h4><%= @safe_location.lat %></h4>
+<h4><%= @safe_location.long %></h4>
+<h4><%= @safe_location.status %></h4>
+<%= link_to "Edit", "/safe_locations/#{@safe_location.id}/edit" %>
+<%= link_to "Delete", "/safe_locations/#{@safe_location.id}", method: :delete %>

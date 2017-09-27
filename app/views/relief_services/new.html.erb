@@ -1,0 +1,7 @@
+<h1>New Service</h1>
+
+<%= form_tag "/services", method: :post do %>
+  <h3>Service name:</h3><input type="text" name="name" value="">
+  <h3>Phone:</h3><input type="text" name="phone" value="">
+  <input type="submit" value="sumbit">
+<% end %>

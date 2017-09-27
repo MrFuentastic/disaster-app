@@ -9,6 +9,16 @@
   </head>
 
   <body>
+    <a href="/"><h4>Home</h4></a>
+    <h5><%= current_user && current_user.email %></h5>
+    <% if current_user %>
+      <%= link_to "Logout", "/logout", method: :delete %>
+    <% else %>
+      <a href="/login">Login</a>
+      <a href="/signup">Create an Account</a>
+    <% end %>
+  
+    
     <%= yield %>
   </body>
 </html>

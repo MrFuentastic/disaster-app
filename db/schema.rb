@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926193319) do
+ActiveRecord::Schema.define(version: 20170927170519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,9 +21,53 @@ ActiveRecord::Schema.define(version: 20170926193319) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "emergency_relief_services", force: :cascade do |t|
+    t.integer "emergency_id"
+    t.integer "relief_service_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "emergency_safe_locations", force: :cascade do |t|
+    t.integer "emergency_id"
+    t.integer "safe_location_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "name"
+    t.integer "emergency_id"
+    t.datetime "time_of_occurence"
+    t.string "status"
+    t.decimal "lat", precision: 6, scale: 4
+    t.decimal "long", precision: 7, scale: 4
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "relief_services", force: :cascade do |t|
     t.string "name"
     t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "safe_locations", force: :cascade do |t|
+    t.string "name"
+    t.string "status"
+    t.decimal "lat", precision: 6, scale: 4
+    t.decimal "long", precision: 7, scale: 4
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "password_digest"
+    t.decimal "lat", precision: 6, scale: 4
+    t.decimal "long", precision: 7, scale: 4
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -1,0 +1,9 @@
+<h1>Create a new safe zone</h1>
+
+<%= form_tag "/safe_locations", method: :post do %>
+  <h4>name:</h4><input type="text" name="name" value="">
+  <h4>latitude:</h4><input type="text" name="lat" value="">
+  <h4>longitude:</h4><input type="text" name="long" value="">
+  <h4>status:</h4><input type="text" name="status" value="">
+  <input type="Submit" value="Submit">
+<% end %>

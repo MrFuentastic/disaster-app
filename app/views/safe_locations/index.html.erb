@@ -1,0 +1,15 @@
+<% @safe_locations.each do |location| %>
+  <a href="/safe_locations/<%= location.id %>"><h3><%= location.name %></h3></a>
+<% end %>
+
+<h1>|||||||||||||||||||||||||||||||||||||||||||||||||||||||||</h1>
+
+<% @emergencies.each do |emergency| %>
+  <a href="/emergencies/<%= emergency.id %>"><h3><%= emergency.name %></h3></a>
+<% end %>
+
+<h1>|||||||||||||||||||||||||||||||||||||||||||||||||||||||||</h1>
+
+<% @services.each do |service| %>
+  <a href="/services/<%= service.id %>"><h3><%= service.name %></h3></a> 
+<% end %>

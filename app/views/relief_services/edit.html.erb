@@ -1,0 +1,5 @@
+<%= form_tag "/services/#{@service.id}", method: :post do %>
+  <input type="text" name="name" value="<%= @service.name %>">
+  <input type="text" name="phone" value="<%= @service.phone %>">
+  <input type="submit" value="submit">
+<% end %>
