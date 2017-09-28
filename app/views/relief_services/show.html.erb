@@ -1,3 +1,4 @@
 <h1><%= @service.name %></h1>
 <h2><%= @service.phone %></h2>
 <a href="/services/<%= @service.id %>/edit"><h4>Edit</h4></a>
+<%= link_to "Delete", "/services/#{@service.id}", method: :delete %>

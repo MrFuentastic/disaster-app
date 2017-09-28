@@ -28,8 +28,25 @@ class UsersController < ApplicationController
   end
 #TODO - user editing after password confirmation
   def edit
+    @user = User.find(params[:id])
   end
 
   def update
+    user = User.find(params[:id])
+    user.update(
+                name: params[:name],
+                email: params[:email],
+                password: params[:password],
+                password_confirmation: params[:password_confirmation],
+                lat: params[:lat],
+                long: params[:long]
+                )
+    redirect_to "/users/#{user.id}"
+  end
+
+  def destroy
+    user = User.find(params[:id])
+    user.destroy
+    redirect_to '/'    
   end
 end

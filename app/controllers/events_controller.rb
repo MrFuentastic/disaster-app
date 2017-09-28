@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   def new
-    @emergency = Emergency.all
+    @emergencies = Emergency.all
   end
 
   def create
@@ -16,8 +16,10 @@ class EventsController < ApplicationController
   end
 
   def show
-    @emergency = Emergency.all
     @event = Event.find(params[:id])
+    @emergency = Emergency.find(@event.emergency_id)
+    user_location = {lat: current_user.lat, long: current_user.long}
+    @distance = @event.haversine_distance(user_location)
   end
 
   def edit
@@ -31,7 +33,12 @@ class EventsController < ApplicationController
                   lat: params[:lat],
                   long: params[:long]
                   )
-                    
     redirect_to "/events/#{event.id}"
+  end
+
+  def destroy
+    event = Event.find(params[:id])
+    event.destroy
+    redirect_to '/'
   end
 end

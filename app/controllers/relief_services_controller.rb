@@ -29,4 +29,10 @@ class ReliefServicesController < ApplicationController
 
     redirect_to "/services/#{service.id}"
   end
+
+  def destroy
+    relief_service = ReliefService.find(params[:id])
+    relief__service.destroy
+    redirect_to '/'
+  end
 end
