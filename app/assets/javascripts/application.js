@@ -145,9 +145,12 @@ function initMap() {
     marker = new google.maps.Marker({
         position: latLng,
         map: map,
+        icon: ('/assets/staypuft.png'),
         draggable: false,
-        animation: google.maps.Animation.DROP
+        animation: google.maps.Animation.DROP,
+        zIndex: 1
     });
+
 }
 
 google.maps.event.addDomListener(window, 'load', initMap);
