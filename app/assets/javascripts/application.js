@@ -15,6 +15,9 @@
 //= require jquery3
 //= require popper
 //= require bootstrap-sprockets
+$(function () {
+    $('[data-toggle="popover"]').popover()
+  })
 
 var position = [41.8922, -87.6349];
 

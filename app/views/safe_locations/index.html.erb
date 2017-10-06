@@ -1,5 +1,5 @@
 <div id="googlemaps"></div>
-<div class="dropdown">
+<div class="menu top">
   <button type="button" class="menu-toggle" data-toggle="dropdown">
     <span class="sr-only">Toggle Navigation</span>
     <span class="icon-bar"></span>
@@ -7,19 +7,73 @@
     <span class="icon-bar"></span>
   </button>
   <div class="dropdown-menu">
-    <div class="dropdown">
-      <button type="button" data-toggle="dropdown">
-        Dropdown
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-      </ul>
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+            Safe Locations</a>
+          </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <% @safe_locations.each do |location| %>
+              <a href="/safe_locations/<%= location.id %>"><h6><%= location.name %></h6></a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+            Emergencies</a>
+          </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+          <div class="panel-body">
+            <% @emergencies.each do |emergency| %>
+              <a href="/emergencies/<%= emergency.id %>"><h6><%= emergency.name %></h6></a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+            Services</a>
+          </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+          <div class="panel-body">
+            <% @services.each do |service| %>
+              <a href="/services/<%= service.id %>"><h6><%= service.name %></h6></a> 
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+            Events</a>
+          </h4>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+          <div class="panel-body">
+          <% @events.each do |event| %>
+            <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="right" data-html="true" data-content="<%= event.lat %>, <%= event.long %><br /><%= event.status %>">
+            <%= event.name %>
+            </button>
+            <br>
+          <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
 </div>
+
 
