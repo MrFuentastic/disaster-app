@@ -1,9 +1,28 @@
 class SafeLocationsController < ApplicationController
   def index
     @safe_locations = SafeLocation.all
+    @sl_markers = []
+    @safe_locations.each do |sl|
+      @sl_markers << [
+                      sl.name,
+                      sl.status,
+                      sl.lat,
+                      sl.long
+                      ]
+    end
+    @events = Event.all
+    @event_markers = []
+    @events.each do |event|
+      @event_markers << [
+                      event.name,
+                      event.status,
+                      event.lat,
+                      event.long,
+                      ]
+    end
     @emergencies = Emergency.all
     @services = ReliefService.all
-    @events = Event.all
+
 
     user_location = {lat: current_user.lat, long: current_user.long}
 
