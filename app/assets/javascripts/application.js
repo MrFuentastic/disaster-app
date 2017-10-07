@@ -21,9 +21,9 @@ $(document).ready(function(){
     })
 
     var safeLocations = $("#markers").data('safeLocations');
-    var events = $("#markers").data('events')
+    var events = $("#markers").data('events');
     var position = [41.8922, -87.6349];
-
+    
     function initMap() {
 
         var latLng = new google.maps.LatLng(position[0], position[1]);
@@ -158,13 +158,15 @@ $(document).ready(function(){
                 marker.setIcon(iconImage);
             }
 
-            var infoWindow = new google.maps.InfoWindow({
-                content: infoWinContent
-            })
+            if (content){
+                var infoWindow = new google.maps.InfoWindow({
+                    content: infoWinContent
+                })
 
-            marker.addListener("click", function(){
-                infoWindow.open(map, marker);
-            })
+                marker.addListener("click", function(){
+                    infoWindow.open(map, marker);
+                })
+            }    
         }
 
         for (var i = 0; i < safeLocations.length; i++){
@@ -183,9 +185,15 @@ $(document).ready(function(){
 
         google.maps.event.addListener(map, 'click', function(event){
             var coords = event.latLng;
-            var content = "Add links to forms for new stuff here.";
+            document.getElementById( "slFormLat" ).value = event.latLng.lat();
+            document.getElementById( "slFormLong" ).value = event.latLng.lng();
+            document.getElementById( "evFormLat" ).value = event.latLng.lat();
+            document.getElementById( "evFormLong" ).value = event.latLng.lng();
+            var content = "<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#safeLocationForm'>New Safe Location</button><br><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eventForm'>New Event</button>";
             addMarker(coords, content);
         });
+
+
     }
 
 

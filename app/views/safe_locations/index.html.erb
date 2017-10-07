@@ -79,3 +79,64 @@
 </div>
 
 
+  <div id="safeLocationForm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">New Safe Location</h4>
+        </div>
+        <div class="modal-body">
+          <%= form_tag "/safe_locations", method: :post do %>
+            <h4>name:</h4><input type="text" name="name" value="">
+            <input type="hidden" id="slFormLat" name="lat" value="">
+            <input type="hidden" id="slFormLong" name="long" value="">
+            <h4>status:</h4><input type="text" name="status" value="">
+            <input type="submit" value="Submit">
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="eventForm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">New Event</h4>
+        </div>
+        <div class="modal-body">
+          <%= form_tag "/events", method: :post do %>
+            <h4>Type of Emergency:</h4><select name="emergency_id">
+              <% @emergencies.each do |emergency| %>
+                <option value="<%= emergency.id %>"><%= emergency.name %></option>
+              <% end %>
+            </select>
+            <h4>Name:</h4><input type="text" name="name" value="">
+            <input type="hidden" id="evFormLat" name="lat" value="">
+            <input type="hidden" id="evFormLong" name="long" value="">
+            <h4>status:</h4><input type="text" name="status" value="">
+            <input type="submit" value="Submit">
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
