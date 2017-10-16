@@ -1,6 +1,6 @@
 <h1>Edit Account:</h1>
 
-<%= form_tag "/users/#{@user.id}", method: :post do %>
+<%= form_tag "/users/#{@user.id}", method: :patch do %>
   <h4>name:</h4><input type="text" name="name" value="<%= @user.name %>">
   <h4>email:</h4><input type="email" name="email" value="<%= @user.email %>">
   <h4>Your current latitude:</h4><input type="text" name="lat" value="<%= @user.lat %>">

@@ -12,7 +12,7 @@ class EventsController < ApplicationController
                       long: params[:long]
                       )
     event.save
-    redirect_to "/events/#{event.id}" 
+    redirect_to "/safe_locations" 
   end
 
   def show
@@ -33,7 +33,7 @@ class EventsController < ApplicationController
                   lat: params[:lat],
                   long: params[:long]
                   )
-    redirect_to "/events/#{event.id}"
+    redirect_to "/safe_locations"
   end
 
   def destroy

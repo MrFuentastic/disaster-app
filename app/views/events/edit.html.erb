@@ -1,6 +1,6 @@
 <h1>Edit Event</h1>
 
-<%= form_tag "/events/#{@event.id}", method: :post do %>
+<%= form_tag "/events/#{@event.id}", method: :patch do %>
   <h4>latitude:</h4><input type="text" name="lat" value="<%= @event.lat %>">
   <h4>longitude:</h4><input type="text" name="long" value="<%= @event.long %>">
   <h4>status:</h4><input type="text" name="status" value="<%= @event.status %>">

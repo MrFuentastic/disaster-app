@@ -1,50 +1,53 @@
 class SafeLocationsController < ApplicationController
   def index
     @safe_locations = SafeLocation.all
+    @emergencies = Emergency.all
+    @services = ReliefService.all
+    @events = Event.all
+    
+    if current_user
+      user_location = {lat: current_user.lat, long: current_user.long}
+    end
+
+    emergency_cat = params[:emergency_cat]
+    
+    if emergency_cat
+      emergency = Emergency.find(emergency_cat)
+      @safe_locations = emergency.safe_locations
+      @events = emergency.events
+      @services = emergency.relief_services
+    end
+
     @sl_markers = []
     @safe_locations.each do |sl|
       @sl_markers << [
                       sl.name,
                       sl.status,
                       sl.lat,
-                      sl.long
+                      sl.long,
+                      "/safe_locations/#{sl.id}",
+                      sl.id
                       ]
     end
-    @events = Event.all
+
+
     @event_markers = []
     @events.each do |event|
       @event_markers << [
-                      event.name,
-                      event.status,
-                      event.lat,
-                      event.long,
-                      ]
-    end
-    @emergencies = Emergency.all
-    @services = ReliefService.all
-
-
-    user_location = {lat: current_user.lat, long: current_user.long}
-
-    distance = params[:dist]
-    emergency_cat = params[:emergency_cat]
-    dist = params[:dist]
-    
-    if emergency_cat
-      emergency = Emergency.find(emergency_cat)
-      @safe_locations = emergency.safe_locations
-    end
-
-    if distance
-      # move to model method if you can
-      @safe_locations = @safe_locations.sort_by { |location| location.haversine_distance(user_location) }
+                        event.name,
+                        event.status,
+                        event.lat,
+                        event.long,
+                        "/events/#{event.id}",
+                        event.id
+                        ]
     end
   end
-
+  
   def new
     
   end
-
+  
   def create
     safe_location = SafeLocation.new(
                                     name: params[:name],
@@ -53,7 +56,7 @@ class SafeLocationsController < ApplicationController
                                     status: params[:status]
                                     )
     safe_location.save
-    redirect_to "/safe_locations/#{safe_location.id}"
+    redirect_to "/safe_locations/"
   end
 
   def show
@@ -74,7 +77,7 @@ class SafeLocationsController < ApplicationController
                         long: params[:long],
                         status: params[:status]
                         )
-    redirect_to "/safe_locations/#{safe_location.id}"
+    redirect_to "/safe_locations/"
   end
 
   def destroy

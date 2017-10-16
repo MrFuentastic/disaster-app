@@ -1,6 +1,6 @@
 <h1>Edit safe zone</h1>
 
-<%= form_tag "/safe_locations/#{@safe_location.id}", method: :post do %>
+<%= form_tag "/safe_locations/#{@safe_location.id}", method: :patch do %>
   <h4>name:</h4><input type="text" name="name" value="<%= @safe_location.name %>">
   <h4>latitude:</h4><input type="text" name="lat" value="<%= @safe_location.lat %>">
   <h4>longitude:</h4><input type="text" name="long" value="<%= @safe_location.long %>">
