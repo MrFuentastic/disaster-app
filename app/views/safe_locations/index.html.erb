@@ -30,136 +30,15 @@
 </div>
 
 
+  <%= render partial: "modal", locals: {form_id: "signupForm", form_location: "users/new"} %>
 
-  <div id="signupForm" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Sign Up</h4>
-        </div>
-        <div class="modal-body">
-          <%= form_tag '/users', method: :post do %>
-            <h4>name:</h4><input type="text" name="name">
-            <h4>email:</h4><input type="email" name="email">
-            <h4>Your current latitude:</h4><input type="text" name="lat">
-            <h4>Your current longitude:</h4><input type="text" name="long">
-            <h4>Password:</h4><input type="password" name="password">
-            <h4>Confirm Password:</h4><input type="password" name="password_confirmation">
-            <input type="submit" value="Submit">
-          <% end %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render partial: "modal", locals: {form_id: "signinForm", form_location: "sessions/new"} %>
 
+  <%= render partial: "modal", locals: {form_id: "safeLocationForm", form_location: "new"} %>
 
+  <%= render partial: "modal", locals: {form_id: "eventForm", form_location: "events/new"} %>
 
-  <div id="signinForm" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Log In</h4>
-        </div>
-        <div class="modal-body">
-          <h1>Login</h1>
-          <%= form_tag '/login', method: :post do %>
-            <h4>email:</h4><input type="email" name="email">
-            <h4>password:</h4><input type="password" name="password">
-            <input type="submit" value="Submit">
-          <% end %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="safeLocationForm" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">New Safe Location</h4>
-        </div>
-        <div class="modal-body">
-          <%= form_tag "/safe_locations", method: :post do %>
-            <h4>name:</h4><input type="text" name="name" value="">
-            <input type="hidden" id="slFormLat" name="lat" value="">
-            <input type="hidden" id="slFormLong" name="long" value="">
-            <h4>status:</h4><input type="text" name="status" value="">
-            <input type="submit" value="Submit">
-          <% end %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="eventForm" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">New Event</h4>
-        </div>
-        <div class="modal-body">
-          <%= form_tag "/events", method: :post do %>
-            <h4>Type of Emergency:</h4><select name="emergency_id">
-              <% @emergencies.each do |emergency| %>
-                <option value="<%= emergency.id %>"><%= emergency.name %></option>
-              <% end %>
-            </select>
-            <h4>Name:</h4><input type="text" name="name" value="">
-            <input type="hidden" id="evFormLat" name="lat" value="">
-            <input type="hidden" id="evFormLong" name="long" value="">
-            <h4>status:</h4><input type="text" name="status" value="">
-            <input type="submit" value="Submit">
-          <% end %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="editForm" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="editFormTitle">Edit</h4>
-        </div>
-        <div class="modal-body">
-          <form action="/" method="post" name="editform" id="editform">
-            <h4>Name:</h4><input id="edFormName" type="text" name="name" value="">
-            <input type="hidden" id="edFormLat" name="lat" value="">
-            <input type="hidden" id="edFormLong" name="long" value="">
-            <input type="hidden" id="edFormId" name="id" value="">
-            <h4>Status:</h4><input id="edFormStatus" type="text" name="status" value="">
-            <h4>Type of Emergency:</h4><select name="emergency_id">
-              <% @emergencies.each do |emergency| %>
-                <option value="<%= emergency.id %>"><%= emergency.name %></option>
-              <% end %>
-            </select>
-            <input type="submit" value="Submit">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-
-
+  <%= render partial: "modal", locals: {form_id: "editForm", form_location: "events/edit"} %>
 
 </div>
 

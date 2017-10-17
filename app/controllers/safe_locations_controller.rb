@@ -4,7 +4,7 @@ class SafeLocationsController < ApplicationController
     @emergencies = Emergency.all
     @services = ReliefService.all
     @events = Event.all
-    
+
     if current_user
       user_location = {lat: current_user.lat, long: current_user.long}
     end
@@ -61,8 +61,6 @@ class SafeLocationsController < ApplicationController
 
   def show
     @safe_location = SafeLocation.find(params[:id])
-    user_location = {lat: current_user.lat, long: current_user.long}
-    @distance = @safe_location.haversine_distance(user_location)
   end
 
   def edit

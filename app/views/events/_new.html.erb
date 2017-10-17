@@ -1,5 +1,4 @@
-<h1>New Event</h1>
-
+<h3>New Event</h3>
 <%= form_tag "/events", method: :post do %>
   <h4>Type of Emergency:</h4><select name="emergency_id">
     <% @emergencies.each do |emergency| %>
@@ -7,8 +6,8 @@
     <% end %>
   </select>
   <h4>Name:</h4><input type="text" name="name" value="">
-  <h4>latitude:</h4><input type="text" name="lat" value="">
-  <h4>longitude:</h4><input type="text" name="long" value="">
+  <input type="hidden" id="evFormLat" name="lat" value="">
+  <input type="hidden" id="evFormLong" name="long" value="">
   <h4>status:</h4><input type="text" name="status" value="">
   <input type="submit" value="Submit">
 <% end %>

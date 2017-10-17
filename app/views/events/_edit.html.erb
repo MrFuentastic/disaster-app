@@ -1,0 +1,14 @@
+<h3>Edit</h3>
+<form action="/" method="post" name="editform" id="editform">
+  <h4>Name:</h4><input id="edFormName" type="text" name="name" value="">
+  <input type="hidden" id="edFormLat" name="lat" value="">
+  <input type="hidden" id="edFormLong" name="long" value="">
+  <input type="hidden" id="edFormId" name="id" value="">
+  <h4>Status:</h4><input id="edFormStatus" type="text" name="status" value="">
+  <h4>Type of Emergency:</h4><select name="emergency_id">
+    <% @emergencies.each do |emergency| %>
+      <option value="<%= emergency.id %>"><%= emergency.name %></option>
+    <% end %>
+  </select>
+  <input type="submit" value="Submit">
+</form>

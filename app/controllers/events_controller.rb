@@ -18,8 +18,6 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @emergency = Emergency.find(@event.emergency_id)
-    user_location = {lat: current_user.lat, long: current_user.long}
-    @distance = @event.haversine_distance(user_location)
   end
 
   def edit
