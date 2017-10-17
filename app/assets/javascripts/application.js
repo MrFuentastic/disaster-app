@@ -190,14 +190,20 @@ $(document).ready(function() {
       addMarker(coords, content, image, event[4], event[0], event[1], event[5]);
     }
 
-    google.maps.event.addListener(map, 'dblclick', function(event) {
-      var coords = event.latLng;
-      document.getElementById( "slFormLat" ).value = event.latLng.lat();
-      document.getElementById( "slFormLong" ).value = event.latLng.lng();
-      document.getElementById( "evFormLat" ).value = event.latLng.lat();
-      document.getElementById( "evFormLong" ).value = event.latLng.lng();
-      var content = `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#safeLocationForm'>New Safe Location</button><br><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eventForm'>New Event</button>`;
-      addMarker(coords, content);
+    google.maps.event.addListener(map, 'mousedown', function(event) {
+      var interval = setInterval(function() {
+        var coords = event.latLng;
+        document.getElementById( "slFormLat" ).value = event.latLng.lat();
+        document.getElementById( "slFormLong" ).value = event.latLng.lng();
+        document.getElementById( "evFormLat" ).value = event.latLng.lat();
+        document.getElementById( "evFormLong" ).value = event.latLng.lng();
+        var content = `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#safeLocationForm'>New Safe Location</button><br><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eventForm'>New Event</button>`;
+        addMarker(coords, content);
+      }, 500);
+
+      google.maps.event.addListener(map, 'mouseup', function(event) {
+        clearInterval(interval);
+      });
     });
 
 
