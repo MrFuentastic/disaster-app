@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require display_route
 //= require rails-ujs
 //= require jquery3
 //= require popper
@@ -17,14 +18,18 @@
 //= require_tree .
 
 $(document).ready(function() {
-
+  var userLoc = $("#markers").data("userLocation");
   var safeLocations = $("#markers").data('safeLocations');
   var events = $("#markers").data('events');
   var position = [41.8922, -87.6349];
 
   function initMap() {
 
-    var latLng = new google.maps.LatLng(position[0], position[1]);
+    if (userLoc === "") {
+      var latLng = new google.maps.LatLng(position[0], position[1]);
+    } else {
+      latLng = new google.maps.LatLng(userLoc[0], userLoc[1]);
+    }
 
     var mapOptions = {
       zoom: 12, // initialize zoom level - the max value is 21
@@ -138,13 +143,19 @@ $(document).ready(function() {
         }
       ]
     };
-
+    
     var map = new google.maps.Map(document.getElementById('googlemaps'),
       mapOptions);
-
-
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer({
+      draggable: true,
+      map: map,
+    });
+    
+    // displayRoute({lat: userLoc[0], lng: userLoc[1]}, {lat: position[0], lng: position[1]}, directionsService, directionsDisplay);
+    
     function addMarker(coords, infoWinContent, iconImage, editUrl, locName, locStatus, locId) {
-
+      
       var marker = new google.maps.Marker({
         position: coords,
         map: map,
@@ -156,12 +167,12 @@ $(document).ready(function() {
       if (iconImage) {
         marker.setIcon(iconImage);
       }
-
+      
       if (infoWinContent) {
         var infoWindow = new google.maps.InfoWindow({
           content: infoWinContent,
         });
-
+        
         marker.addListener("click", function() {
           infoWindow.open(map, marker);
           document.getElementById( "editform" ).action = editUrl;          
@@ -173,15 +184,21 @@ $(document).ready(function() {
         });
       }    
     }
-
+    
     for (let i = 0; i < safeLocations.length; i++) {
       let sl = safeLocations[i];
       let coords = {lat: sl[2], lng: sl[3]};
       let image = "/assets/fallout.png";
-      let content = `<h6>${sl[0]}</h6>${sl[1]}<br><button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
+      let content = `<h6>${sl[0]}</h6>${sl[1]}<br>
+      <button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
+      if (userLoc !== "") {
+        content += `<br>
+        <button onclick="displayRoute({lat: ${userLoc[0]},lng: ${userLoc[1]}}, 
+          {lat: ${sl[2]}, lng: ${sl[3]}}, directionsService, directionsDisplay)">Show me the way!</button>`;
+      }
       addMarker(coords, content, image, sl[4], sl[0], sl[1], sl[5]);
     }
-
+      
     for (let i = 0; i < events.length; i++) {
       let event = events[i];
       let coords = {lat: event[2], lng: event[3]};
@@ -189,27 +206,30 @@ $(document).ready(function() {
       let content = `<h6>${event[0]}</h6>${event[1]}<br><button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
       addMarker(coords, content, image, event[4], event[0], event[1], event[5]);
     }
-
+      
     google.maps.event.addListener(map, 'mousedown', function(event) {
+        
       var interval = setInterval(function() {
         var coords = event.latLng;
         document.getElementById( "slFormLat" ).value = event.latLng.lat();
         document.getElementById( "slFormLong" ).value = event.latLng.lng();
         document.getElementById( "evFormLat" ).value = event.latLng.lat();
         document.getElementById( "evFormLong" ).value = event.latLng.lng();
-        var content = `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#safeLocationForm'>New Safe Location</button><br><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eventForm'>New Event</button>`;
+        var content = `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#safeLocationForm'>New Safe Location</button>
+          <br><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eventForm'>New Event</button>`;
         addMarker(coords, content);
-      }, 500);
-
+      }, 700);
+        
       google.maps.event.addListener(map, 'mouseup', function(event) {
         clearInterval(interval);
       });
+        
     });
-
-
+      
   }
-
+  
 
   google.maps.event.addDomListener(window, 'load', initMap);
-
+    
 });
+  

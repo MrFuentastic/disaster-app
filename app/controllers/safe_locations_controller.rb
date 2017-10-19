@@ -6,7 +6,10 @@ class SafeLocationsController < ApplicationController
     @events = Event.all
 
     if current_user
-      user_location = {lat: current_user.lat, long: current_user.long}
+      @user_location = [
+        current_user.lat, 
+        current_user.long
+      ]
     end
 
     emergency_cat = params[:emergency_cat]
