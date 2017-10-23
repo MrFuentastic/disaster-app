@@ -17,6 +17,10 @@
 //= require bootstrap-sprockets
 //= require_tree .
 
+
+var map;
+var google;
+
 $(document).ready(function() {
   var userLoc = $("#markers").data("userLocation");
   var safeLocations = $("#markers").data('safeLocations');
@@ -144,45 +148,26 @@ $(document).ready(function() {
       ]
     };
     
-    var map = new google.maps.Map(document.getElementById('googlemaps'),
+    map = new google.maps.Map(document.getElementById('googlemaps'),
       mapOptions);
     directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: map,
+      polylineOptions: {
+        strokeColor: 'purple',
+        strokeOpacity: 0.5,
+        strokeWeight: 10
+      },
+      markerOptions: {
+        visible: false
+      }
     });
     
-    // displayRoute({lat: userLoc[0], lng: userLoc[1]}, {lat: position[0], lng: position[1]}, directionsService, directionsDisplay);
+
     
-    function addMarker(coords, infoWinContent, iconImage, editUrl, locName, locStatus, locId) {
-      
-      var marker = new google.maps.Marker({
-        position: coords,
-        map: map,
-        icon: iconImage,
-        draggable: false,
-        animation: google.maps.Animation.DROP
-      });
-      
-      if (iconImage) {
-        marker.setIcon(iconImage);
-      }
-      
-      if (infoWinContent) {
-        var infoWindow = new google.maps.InfoWindow({
-          content: infoWinContent,
-        });
-        
-        marker.addListener("click", function() {
-          infoWindow.open(map, marker);
-          document.getElementById( "editform" ).action = editUrl;          
-          document.getElementById( "edFormName" ).value = locName;
-          document.getElementById( "edFormStatus" ).value = locStatus;
-          document.getElementById( "edFormId" ).value = locId;
-          document.getElementById( "edFormLat" ).value = marker.position.lat();
-          document.getElementById( "edFormLong" ).value = marker.position.lng();
-        });
-      }    
+    if (userLoc !== "") {
+      addMarker({lat: userLoc[0], lng: userLoc[1]}, null, "/assets/user");
     }
     
     for (let i = 0; i < safeLocations.length; i++) {
@@ -223,13 +208,75 @@ $(document).ready(function() {
       google.maps.event.addListener(map, 'mouseup', function(event) {
         clearInterval(interval);
       });
-        
-    });
       
+    });
+    
+    var placeService = new google.maps.places.PlacesService(map);
+    placeService.textSearch({location: { lat: position[0], lng: position[1] }, radius: '500', query: 'armory'}, callback);
+  
+  }
+
+  function searchMarker(placeObject) {
+    
+    if (placeObject.place_id) {
+
+      var marker = new google.maps.Marker({
+        map: map,
+        icon: placeObject.icon,
+        place: {
+          placeId: placeObject.place_id,
+          location: placeObject.geometry.location
+        }
+      });
+    }
   }
   
-
-  google.maps.event.addDomListener(window, 'load', initMap);
-    
-});
+  function addMarker(coords, infoWinContent, iconImage, editUrl, locName, locStatus, locId) {
   
+    var marker = new google.maps.Marker({
+      position: coords,
+      map: map,
+      icon: iconImage,
+      draggable: false,
+      animation: google.maps.Animation.DROP
+    });
+    
+    if (iconImage) {
+      marker.setIcon(iconImage);
+    }
+    
+    if (infoWinContent) {
+      var infoWindow = new google.maps.InfoWindow({
+        content: infoWinContent,
+      });
+    }
+
+    marker.addListener("click", function() {
+      infoWindow.open(map, marker);
+      document.getElementById( "editform" ).action = editUrl;          
+      document.getElementById( "edFormName" ).value = locName;
+      document.getElementById( "edFormStatus" ).value = locStatus;
+      document.getElementById( "edFormId" ).value = locId;
+      document.getElementById( "edFormLat" ).value = marker.position.lat();
+      document.getElementById( "edFormLong" ).value = marker.position.lng();
+    });
+  }
+
+
+  function callback(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        var place = results[i];
+        searchMarker(results[i]);
+      }
+    }
+  }
+  
+  var src = "http://www.gdacs.org/xml/gdacs.kml";
+  var kmlLayer = new google.maps.KmlLayer(src, {
+    map: map
+  });
+
+  google.maps.event.addDomListener(window, 'load', initMap); 
+
+});

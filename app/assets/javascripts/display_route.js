@@ -1,4 +1,3 @@
-
 function displayRoute(origin, destination, service, display) {
   service.route({
     origin: origin,
