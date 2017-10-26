@@ -164,7 +164,6 @@ $(document).ready(function() {
       }
     });
     
-
     
     if (userLoc !== "") {
       addMarker({lat: userLoc[0], lng: userLoc[1]}, null, "/assets/user");
@@ -211,9 +210,16 @@ $(document).ready(function() {
       
     });
     
+    var kmlLayer = new google.maps.KmlLayer({
+      url: "http://gdacs.org/xml/gdacs.kml",
+      map: map,
+      preserveViewport: true
+    });
+
+
     var placeService = new google.maps.places.PlacesService(map);
-    placeService.textSearch({location: { lat: position[0], lng: position[1] }, radius: '500', query: 'armory'}, callback);
-  
+    placeService.textSearch({location: { lat: position[0], lng: position[1] }, radius: '0', query: 'armory'}, callback);
+
   }
 
   function searchMarker(placeObject) {
@@ -238,7 +244,6 @@ $(document).ready(function() {
       map: map,
       icon: iconImage,
       draggable: false,
-      animation: google.maps.Animation.DROP
     });
     
     if (iconImage) {
@@ -272,11 +277,9 @@ $(document).ready(function() {
     }
   }
   
-  var src = "http://www.gdacs.org/xml/gdacs.kml";
-  var kmlLayer = new google.maps.KmlLayer(src, {
-    map: map
-  });
 
+
+  google.maps.event.addDomListener(window, 'resize', initMap);   
   google.maps.event.addDomListener(window, 'load', initMap); 
 
 });

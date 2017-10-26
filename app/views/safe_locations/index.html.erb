@@ -1,49 +1,53 @@
-<div id="googlemaps"></div>
-<div id="markers" data-safe-locations="<%= @sl_markers %>" data-events="<%= @event_markers %>" data-user-location="<%= @user_location %>"></div>
+<div class="containter">
+  
+  <div id="map-container"></div>
+  <div id="googlemaps"></div>
+  <div id="markers" data-safe-locations="<%= @sl_markers %>" data-events="<%= @event_markers %>" data-user-location="<%= @user_location %>"></div>
 
-<div class="menu">
-  <button type="button" class="menu-toggle" data-toggle="dropdown">
-    <span class="sr-only">Toggle Navigation</span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </button>
-  <div class="dropdown-menu">
+  <div class="menu">
+    <button type="button" class="menu-toggle" data-toggle="dropdown">
+      <span class="sr-only">Toggle Navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <div class="dropdown-menu">
 
-    <% if current_user %>
-      <p><%= current_user && current_user.email %></p>
-      <%= link_to "Logout", "/logout", method: :delete %>
-    <% else %>
-      <a data-toggle='modal' data-target='#signupForm'>Sign up!</a><br>
-      <a data-toggle='modal' data-target='#signinForm'>Login!</a>              
-    <% end %>
-    
-    <h4>Emergencies</h4>
-    <% @emergencies.each do |emergency| %>
-      <a href="/safe_locations/?emergency_cat=<%= emergency.id %>"><h6><%= emergency.name %></h6></a>
-    <% end %>
-    <h4>Relevent Services</h4>
-    <% @services.each do |service| %>
-      <a href="/services/<%= service.id %>"><h6><%= service.name %></h6></a> 
+      <% if current_user %>
+        <p><%= current_user && current_user.email %></p>
+        <%= link_to "Logout", "/logout", method: :delete %>
+      <% else %>
+        <a data-toggle='modal' data-target='#signupForm'>Sign up!</a><br>
+        <a data-toggle='modal' data-target='#signinForm'>Login!</a>              
+      <% end %>
+      
+      <h4>Emergencies</h4>
+      <% @emergencies.each do |emergency| %>
+        <a href="/safe_locations/?emergency_cat=<%= emergency.id %>"><h6><%= emergency.name %></h6></a>
+      <% end %>
+      <h4>Relevent Services</h4>
+      <% @services.each do |service| %>
+        <a href="/services/<%= service.id %>"><h6><%= service.name %></h6></a> 
+      <% end %>
+    </div>
+  </div>
+
+
+    <%= render partial: "modal", locals: {form_id: "signupForm", form_location: "users/new"} %>
+
+    <%= render partial: "modal", locals: {form_id: "signinForm", form_location: "sessions/new"} %>
+
+    <%= render partial: "modal", locals: {form_id: "safeLocationForm", form_location: "new"} %>
+
+    <%= render partial: "modal", locals: {form_id: "eventForm", form_location: "events/new"} %>
+
+    <%= render partial: "modal", locals: {form_id: "editForm", form_location: "events/edit"} %>
+
+  </div>
+
+  <div class="container-fluid" id="flash-message">
+    <% flash.each do |name, message| %>
+      <div class="alert alert-<%= name %>" role="alert"><%= message %></div>
     <% end %>
   </div>
-</div>
-
-
-  <%= render partial: "modal", locals: {form_id: "signupForm", form_location: "users/new"} %>
-
-  <%= render partial: "modal", locals: {form_id: "signinForm", form_location: "sessions/new"} %>
-
-  <%= render partial: "modal", locals: {form_id: "safeLocationForm", form_location: "new"} %>
-
-  <%= render partial: "modal", locals: {form_id: "eventForm", form_location: "events/new"} %>
-
-  <%= render partial: "modal", locals: {form_id: "editForm", form_location: "events/edit"} %>
-
-</div>
-
-<div class="container-fluid" id="flash-message">
-  <% flash.each do |name, message| %>
-    <div class="alert alert-<%= name %>" role="alert"><%= message %></div>
-  <% end %>
 </div>
