@@ -42,7 +42,8 @@ class SafeLocationsController < ApplicationController
                         event.lat,
                         event.long,
                         "/events/#{event.id}",
-                        event.id
+                        event.id,
+                        event.emergency.name
                         ]
     end
   end

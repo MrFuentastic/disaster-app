@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>DisasterApp</title>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['MAPS_KEY'] %>&libraries=places" type="text/javascript"></script>
+    
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
@@ -12,5 +12,6 @@
 
 
     <%= yield %>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['MAPS_KEY'] %>&libraries=places&callback=initMap" type="text/javascript"></script>
   </body>
 </html>
