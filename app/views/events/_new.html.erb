@@ -1,5 +1,5 @@
 <h3>New Event</h3>
-<%= form_tag "/events", method: :post do %>
+<%= form_tag "/events", method: :post, multipart: true do %>
   <h4>Type of Emergency:</h4><select name="emergency_id">
     <% @emergencies.each do |emergency| %>
       <option value="<%= emergency.id %>"><%= emergency.name %></option>
@@ -9,5 +9,6 @@
   <input type="hidden" id="evFormLat" name="lat" value="">
   <input type="hidden" id="evFormLong" name="long" value="">
   <h4>status:</h4><input type="text" name="status" value="">
+  <%= file_field_tag :event_pic %>
   <input type="submit" value="Submit">
 <% end %>

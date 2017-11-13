@@ -29,7 +29,10 @@ class SafeLocationsController < ApplicationController
                       sl.lat,
                       sl.long,
                       "/safe_locations/#{sl.id}",
-                      sl.id
+                      sl.id,
+      if sl.sl_image.url
+        @sl_markers << sl.sl_image.url(:medium)
+      end
                       ]
     end
 
@@ -43,8 +46,11 @@ class SafeLocationsController < ApplicationController
                         event.long,
                         "/events/#{event.id}",
                         event.id,
-                        event.emergency.name
+                        event.emergency.name,
                         ]
+      if event.event_pic.url
+        @event_markers << event.event_pic.url(:medium)
+      end
     end
   end
   
@@ -57,7 +63,8 @@ class SafeLocationsController < ApplicationController
                                     name: params[:name],
                                     lat: params[:lat],
                                     long: params[:long],
-                                    status: params[:status]
+                                    status: params[:status],
+                                    sl_image: params[:sl_image]                                    
                                     )
     safe_location.save
     redirect_to "/safe_locations/"
@@ -77,7 +84,8 @@ class SafeLocationsController < ApplicationController
                         name: params[:name],
                         lat: params[:lat],
                         long: params[:long],
-                        status: params[:status]
+                        status: params[:status],
+                        sl_image: params[:sl_image]
                         )
     redirect_to "/safe_locations/"
   end

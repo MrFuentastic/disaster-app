@@ -25,6 +25,10 @@ function initMap() {
   var events = $("#markers").data('events');
   var position = [41.8922, -87.6349];
 
+  for (let i = 0; i < events.length; i++) {
+    console.log(events[i][7]);
+  }
+
     
   if (userLoc === "") {
     var latLng = new google.maps.LatLng(position[0], position[1]);
@@ -180,7 +184,8 @@ function initMap() {
 
     marker.addListener("click", function() {
       infoWindow.open(map, marker);
-      document.getElementById( "editform" ).action = editUrl;          
+      var form = document.getElementById("editform");
+      form.action = editUrl;   
       document.getElementById( "edFormName" ).value = locName;
       document.getElementById( "edFormStatus" ).value = locStatus;
       document.getElementById( "edFormId" ).value = locId;
@@ -211,7 +216,11 @@ function initMap() {
     let event = events[i];
     let coords = {lat: event[2], lng: event[3]};
     let image = `/assets/${event[6]}.png`;
-    let content = `<h6>${event[0]}</h6>${event[1]}<br><button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
+    let content = `<h6>${event[0]}</h6>${event[1]}<br>`
+    if (event[7]) {
+      content += `<IMG BORDER="0" ALIGN="Left" SRC="${event[7]}">`;
+    }
+    content += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
     addMarker(coords, content, image, event[4], event[0], event[1], event[5]);
   }
       
@@ -261,9 +270,9 @@ function initMap() {
     "Flood": ['h'],    
   }
   
-  console.log(searchQueries[events[0][6]]);
+  // console.log(searchQueries[events[0][6]]);
   
-  placeService.textSearch({location: { lat: position[0], lng: position[1] }, radius: '0', query: ""}, callback);
+  placeService.textSearch({location: { lat: position[0], lng: position[1] }, radius: '0', query: "armory"}, callback);
   
   function searchMarker(placeObject) {
     

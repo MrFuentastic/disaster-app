@@ -27,7 +27,8 @@
       <% end %>
       <h4>Relevent Services</h4>
       <% @services.each do |service| %>
-        <a href="/services/<%= service.id %>"><h6><%= service.name %></h6></a> 
+        <h5><%= service.name %></h5>
+        <h6><a href="tel:<%= service.phone %>"><%= service.phone %></a></h6>
       <% end %>
     </div>
   </div>

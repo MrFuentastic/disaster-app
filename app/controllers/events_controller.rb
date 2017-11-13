@@ -9,7 +9,8 @@ class EventsController < ApplicationController
                       emergency_id: params[:emergency_id],
                       status: params[:status],
                       lat: params[:lat],
-                      long: params[:long]
+                      long: params[:long],
+                      event_pic: params[:event_pic]                      
                       )
     event.save
     redirect_to "/safe_locations" 
@@ -29,7 +30,8 @@ class EventsController < ApplicationController
     event.update(
                   status: params[:status],
                   lat: params[:lat],
-                  long: params[:long]
+                  long: params[:long],
+                  event_pic: params[:event_pic]
                   )
     redirect_to "/safe_locations"
   end
