@@ -289,16 +289,10 @@ function initMap() {
   function searchMarker(placeObject) {
     
     if (placeObject.place_id) {
-      var image = {
-        url: placeObject.icon,
-        size: new google.maps.Size(20, 32),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 32)        
-      }
-      console.log(image);
+
       var marker = new google.maps.Marker({
         map: map,
-        icon: image,
+        icon: "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png",
         place: {
           placeId: placeObject.place_id,
           location: placeObject.geometry.location
