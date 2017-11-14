@@ -23,23 +23,24 @@ class SafeLocationsController < ApplicationController
 
     @sl_markers = []
     @safe_locations.each do |sl|
-      @sl_markers << [
+      sl_array = [
                       sl.name,
                       sl.status,
                       sl.lat,
                       sl.long,
                       "/safe_locations/#{sl.id}",
                       sl.id,
+                      "sl_image"
+                    ]
       if sl.sl_image.url
-        @sl_markers << sl.sl_image.url(:medium)
+        sl_array << sl.sl_image.url(:medium)
       end
-                      ]
+      @sl_markers << sl_array
     end
-
 
     @event_markers = []
     @events.each do |event|
-      @event_markers << [
+      event_array = [
                         event.name,
                         event.status,
                         event.lat,
@@ -47,10 +48,12 @@ class SafeLocationsController < ApplicationController
                         "/events/#{event.id}",
                         event.id,
                         event.emergency.name,
+                        "event_pic"
                         ]
       if event.event_pic.url
-        @event_markers << event.event_pic.url(:medium)
+        event_array << event.event_pic.url(:medium)
       end
+      @event_markers << event_array
     end
   end
   

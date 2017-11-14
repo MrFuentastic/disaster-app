@@ -25,10 +25,7 @@ function initMap() {
   var events = $("#markers").data('events');
   var position = [41.8922, -87.6349];
 
-  for (let i = 0; i < events.length; i++) {
-    console.log(events[i][7]);
-  }
-
+  console.log(safeLocations[0][6])
     
   if (userLoc === "") {
     var latLng = new google.maps.LatLng(position[0], position[1]);
@@ -164,7 +161,7 @@ function initMap() {
     }
   });
 
-  function addMarker(coords, infoWinContent, iconImage, editUrl, locName, locStatus, locId) {
+  function addMarker(coords, infoWinContent, iconImage, editUrl, locName, locStatus, locId, picForm) {
     var marker = new google.maps.Marker({
       position: coords,
       map: map,
@@ -191,6 +188,7 @@ function initMap() {
       document.getElementById( "edFormId" ).value = locId;
       document.getElementById( "edFormLat" ).value = marker.position.lat();
       document.getElementById( "edFormLong" ).value = marker.position.lng();
+      document.getElementById( "edFormPic" ).name = picForm;
     });
   }
 
@@ -202,26 +200,33 @@ function initMap() {
     let sl = safeLocations[i];
     let coords = {lat: sl[2], lng: sl[3]};
     let image = "/assets/fallout.png";
-    let content = `<h6>${sl[0]}</h6>${sl[1]}<br>
-    <button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
+    let content = `<h6>${sl[0]}</h6>${sl[1]}`;
+    if (sl[7]) {
+      content += `<br><IMG BORDER="0" ALIGN="Left" SRC="${sl[7]}">`;
+    }
+    if (userLoc !== "") {
+      content += `<br><button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
+    }
     if (userLoc !== "") {
       content += `<br>
       <button onclick="displayRoute({lat: ${userLoc[0]},lng: ${userLoc[1]}}, 
         {lat: ${sl[2]}, lng: ${sl[3]}}, directionsService, directionsDisplay)">Show me the way!</button>`;
     }
-    addMarker(coords, content, image, sl[4], sl[0], sl[1], sl[5]);
+    addMarker(coords, content, image, sl[4], sl[0], sl[1], sl[5], sl[6]);
   }
 
   for (let i = 0; i < events.length; i++) {
     let event = events[i];
     let coords = {lat: event[2], lng: event[3]};
     let image = `/assets/${event[6]}.png`;
-    let content = `<h6>${event[0]}</h6>${event[1]}<br>`
-    if (event[7]) {
-      content += `<IMG BORDER="0" ALIGN="Left" SRC="${event[7]}">`;
+    let content = `<h6>${event[0]}</h6>${event[1]}`;
+    if (event[8]) {
+      content += `<br><IMG BORDER="0" ALIGN="Left" SRC="${event[8]}">`;
     }
-    content += `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
-    addMarker(coords, content, image, event[4], event[0], event[1], event[5]);
+    if (userLoc !== "") {
+      content += `<br><button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#editForm'>Edit</button>`;
+    }
+    addMarker(coords, content, image, event[4], event[0], event[1], event[5], event[7]);
   }
       
   google.maps.event.addListener(map, 'mousedown', function(event) {
@@ -231,8 +236,12 @@ function initMap() {
       document.getElementById( "slFormLong" ).value = event.latLng.lng();
       document.getElementById( "evFormLat" ).value = event.latLng.lat();
       document.getElementById( "evFormLong" ).value = event.latLng.lng();
-      var content = `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#safeLocationForm'>New Safe Location</button>
-        <br><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eventForm'>New Event</button>`;
+      if (userLoc !== "") {
+        var content = `<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#safeLocationForm'>New Safe Location</button>
+          <br><button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#eventForm'>New Event</button>`;
+      } else {
+        content = `<h5>Create an account to add markers!</h5>`;
+      }
       addMarker(coords, content);
     }, 700);
         
@@ -260,33 +269,41 @@ function initMap() {
   
   
   var searchQueries = {
-    "Zombies": ['armory', 'police department'],
-    "Kaiju": [''],
-    "Hurricane": ['c'],
-    "Slight Breeze": ['d'],
-    "Earthquake": ['e'],
-    "Fire": ['f'],
-    "Tornado": ['g'],
-    "Flood": ['h'],    
+    "Zombies": 'police department',
+    "Kaiju": 'national guard',
+    "Hurricane": 'subway',
+    "Slight Breeze": 'park',
+    "Earthquake": 'somewhere else',
+    "Fire": 'water department',
+    "Tornado": 'school',
+    "Flood": 'home depot',    
   }
   
-  // console.log(searchQueries[events[0][6]]);
-  
-  placeService.textSearch({location: { lat: position[0], lng: position[1] }, radius: '0', query: "armory"}, callback);
+  if (userLoc !== "") {
+    placeService.textSearch({location: { lat: userLoc[0], lng: userLoc[1] }, radius: '0', query: searchQueries[events[0][6]]}, callback); 
+  } else {
+    placeService.textSearch({location: { lat: position[0], lng: position[1] }, radius: '0', query: searchQueries[events[0][6]]}, callback);    
+  }
+
   
   function searchMarker(placeObject) {
     
     if (placeObject.place_id) {
-
+      var image = {
+        url: placeObject.icon,
+        size: new google.maps.Size(20, 32),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(0, 32)        
+      }
+      console.log(image);
       var marker = new google.maps.Marker({
         map: map,
-        icon: placeObject.icon,
+        icon: image,
         place: {
           placeId: placeObject.place_id,
           location: placeObject.geometry.location
         }
       });
-
       placeDetails(placeObject, marker);
     }
 
@@ -305,8 +322,9 @@ function initMap() {
         google.maps.event.addListener(marker, 'click', function() {
           infoWindow.setContent(`<div><strong> ${place.name} </strong><br> 
               ${place.formatted_address}<br>
+              <a href="tel: ${place.formatted_phone_number}">${place.formatted_phone_number}</a><br>
               <button onclick="displayRoute({lat: ${userLoc[0]},lng: ${userLoc[1]}}, 
-                {lat:${lat}, lng:${lng}}, directionsService, directionsDisplay)">Show me the way!</button> </div>`);
+                {lat:${lat}, lng:${lng}}, directionsService, directionsDisplay)">Show me the way!</button></div>`);
           infoWindow.open(map, this);
         });
       });
