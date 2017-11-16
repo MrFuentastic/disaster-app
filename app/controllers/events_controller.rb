@@ -27,12 +27,14 @@ class EventsController < ApplicationController
 
   def update
     event = Event.find(params[:id])
-    event.update(
+    event.assign_attributes(
                   status: params[:status],
                   lat: params[:lat],
-                  long: params[:long],
-                  event_pic: params[:event_pic]
+                  long: params[:long]
                   )
+                  puts "***************"
+    event.event_pic = params[:event_pic] unless params[:event_pic] == "" || params[:event_pic] == nil
+    event.save
     redirect_to "/safe_locations"
   end
 

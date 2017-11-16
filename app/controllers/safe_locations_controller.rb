@@ -83,13 +83,14 @@ class SafeLocationsController < ApplicationController
 
   def update
     safe_location = SafeLocation.find(params[:id])
-    safe_location.update(
+    safe_location.assign_attributes(
                         name: params[:name],
                         lat: params[:lat],
                         long: params[:long],
-                        status: params[:status],
-                        sl_image: params[:sl_image]
+                        status: params[:status]
                         )
+    safe_location.sl_image = params[:sl_image] unless params[:sl_image] == "" || params[:sl_image] == nilrails 
+    safe_location.save
     redirect_to "/safe_locations/"
   end
 
