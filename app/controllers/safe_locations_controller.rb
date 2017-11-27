@@ -89,7 +89,7 @@ class SafeLocationsController < ApplicationController
                         long: params[:long],
                         status: params[:status]
                         )
-    safe_location.sl_image = params[:sl_image] unless params[:sl_image] == "" || params[:sl_image] == nilrails 
+    safe_location.sl_image = params[:sl_image] unless params[:sl_image] == "" || params[:sl_image] == nil
     safe_location.save
     redirect_to "/safe_locations/"
   end
