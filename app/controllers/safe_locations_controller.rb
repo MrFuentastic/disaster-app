@@ -23,27 +23,37 @@ class SafeLocationsController < ApplicationController
 
     @sl_markers = []
     @safe_locations.each do |sl|
-      @sl_markers << [
+      sl_array = [
                       sl.name,
                       sl.status,
                       sl.lat,
                       sl.long,
                       "/safe_locations/#{sl.id}",
-                      sl.id
-                      ]
+                      sl.id,
+                      "sl_image"
+                    ]
+      if sl.sl_image.url
+        sl_array << sl.sl_image.url(:medium)
+      end
+      @sl_markers << sl_array
     end
-
 
     @event_markers = []
     @events.each do |event|
-      @event_markers << [
+      event_array = [
                         event.name,
                         event.status,
                         event.lat,
                         event.long,
                         "/events/#{event.id}",
-                        event.id
+                        event.id,
+                        event.emergency.name,
+                        "event_pic"
                         ]
+      if event.event_pic.url
+        event_array << event.event_pic.url(:medium)
+      end
+      @event_markers << event_array
     end
   end
   
@@ -56,7 +66,8 @@ class SafeLocationsController < ApplicationController
                                     name: params[:name],
                                     lat: params[:lat],
                                     long: params[:long],
-                                    status: params[:status]
+                                    status: params[:status],
+                                    sl_image: params[:sl_image]                                    
                                     )
     safe_location.save
     redirect_to "/safe_locations/"
@@ -72,12 +83,14 @@ class SafeLocationsController < ApplicationController
 
   def update
     safe_location = SafeLocation.find(params[:id])
-    safe_location.update(
+    safe_location.assign_attributes(
                         name: params[:name],
                         lat: params[:lat],
                         long: params[:long],
                         status: params[:status]
                         )
+    safe_location.sl_image = params[:sl_image] unless params[:sl_image] == "" || params[:sl_image] == nil
+    safe_location.save
     redirect_to "/safe_locations/"
   end
 

@@ -4,6 +4,8 @@ include Math
 class SafeLocation < ApplicationRecord
   has_many :emergency_safe_locations
   has_many :emergencies, through: :emergency_safe_locations
+  has_attached_file :sl_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :sl_image, content_type: /\Aimage\/.*\z/
 
   def earth_radius_mi
     3959
